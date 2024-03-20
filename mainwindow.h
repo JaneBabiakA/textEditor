@@ -4,6 +4,7 @@
 #include "qtextedit.h"
 #include <QWidget>
 #include <QFileDialog>
+#include <QStandardPaths>
 #include <fstream>
 
 class QPushButton;
@@ -11,6 +12,7 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QTextEdit;
 class QFileDialog;
+class QStandardPaths;
 class mainWindow : public QWidget
 {
     std::string fileName;
@@ -19,6 +21,7 @@ public:
     mainWindow(QWidget *parent = nullptr);
     void openDocument(QTextEdit *doc_box){
         saveDocument(doc_box);
+        doc_box->clear();
         std::string line;
         fileName = QFileDialog::getOpenFileName(this, "", "", "Text files (*.txt)").toStdString();
         std::ifstream file(fileName);
@@ -27,19 +30,28 @@ public:
             doc_box->append(QString::fromStdString(line));
         }
     }
-    void createDocument(){
-        //if filename, save it and clear. also clear textbox
+    void createDocument(QTextEdit *doc_box){
+        if (fileName != ""){
+            saveDocument(doc_box);
+        }
+        doc_box->clear();
         return;
     }
     void saveDocument(QTextEdit *doc_box){
         QTextStream(stdout) << QString::fromStdString(fileName) << Qt::endl;
         if(fileName == ""){
-            fileName = "C:\\Users\\janef\\Downloads\\saved_doc.txt";
+            fileName = QFileDialog::getSaveFileName(this, "", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), "Text files (*.txt)").toStdString();
         }
         QTextStream(stdout) << QString::fromStdString(fileName) << Qt::endl;
         std::ofstream file(fileName);
         file << doc_box->toPlainText().toStdString();
         file.close();
+    }
+    void boldText(QTextEdit *doc_box){
+        return;
+    }
+    void italicsText(QTextEdit *doc_box){
+        return;
     }
 
 private:
