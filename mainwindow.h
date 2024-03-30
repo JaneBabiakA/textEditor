@@ -34,6 +34,7 @@ public:
     void createDocument(QTextEdit *doc_box){
         if (fileName != ""){
             saveDocument(doc_box);
+            fileName = "";
         }
         doc_box->clear();
         return;
@@ -41,7 +42,7 @@ public:
     void saveDocument(QTextEdit *doc_box){
         QTextStream(stdout) << QString::fromStdString(fileName) << Qt::endl;
         if(fileName == ""){
-            fileName = QFileDialog::getSaveFileName(this, "", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), "Text files (*.txt)").toStdString();
+            fileName = QFileDialog::getSaveFileName(this, "", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), "All Word Documents (*.doc, *.docx)").toStdString();
         }
         QTextStream(stdout) << QString::fromStdString(fileName) << Qt::endl;
         std::ofstream file(fileName);
@@ -49,27 +50,58 @@ public:
         file.close();
     }
     void boldText(QTextEdit *doc_box){
-        QTextCharFormat format;
-        format.setFontWeight(QFont::Bold);
-        if (doc_box->textCursor().charFormat() == format){
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        if (format.fontWeight() == 75){
             format.setFontWeight(QFont::Normal);
-            doc_box->textCursor().setCharFormat(format);
         }
         else{
-            doc_box->textCursor().setCharFormat(format);
+            format.setFontWeight(QFont::Bold);
         }
+        doc_box->textCursor().setCharFormat(format);
         return;
     }
     void italicsText(QTextEdit *doc_box){
-        QTextCharFormat format;
-        format.setFontItalic(true);
-        if (doc_box->textCursor().charFormat() == format){
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        if (format.fontItalic()){
             format.setFontItalic(false);
-            doc_box->textCursor().setCharFormat(format);
         }
         else{
-            doc_box->textCursor().setCharFormat(format);
+            format.setFontItalic(true);
         }
+        doc_box->textCursor().setCharFormat(format);
+        return;
+    }
+    void underlineText(QTextEdit *doc_box){
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        if (format.fontUnderline()){
+            format.setFontUnderline(false);
+        }
+        else{
+            format.setFontUnderline(true);
+        }
+        doc_box->textCursor().setCharFormat(format);
+        return;
+    }
+    void highlightText(QTextEdit *doc_box){
+        return;
+    }
+    void colourText(QTextEdit *doc_box){
+        QColor colour;
+        colour.fromString("blue");
+        QTextCharFormat format;
+        format.setForeground(colour);
+        doc_box->textCursor().setCharFormat(format);
+        return;
+    }
+    void strikeText(QTextEdit *doc_box){
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        if (format.fontStrikeOut()){
+            format.setFontStrikeOut(false);
+        }
+        else{
+            format.setFontStrikeOut(true);
+        }
+        doc_box->textCursor().setCharFormat(format);
         return;
     }
 
