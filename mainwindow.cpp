@@ -17,11 +17,12 @@ mainWindow::mainWindow(QWidget *parent) :
     QPushButton *new_button = new QPushButton("New", this);
     QPushButton *open_button = new QPushButton("Open", this);
     QPushButton *save_button = new QPushButton("Save", this);
-    QPushButton *bold_button = new QPushButton("<i>B</i>", this);
+    QPushButton *bold_button = new QPushButton("B", this);
     QPushButton *underline_button = new QPushButton("U", this);
     QPushButton *highlight_button = new QPushButton("H", this); //choose better icon later
     QPushButton *colour_button = new QPushButton("C", this); //choose better icon later
     QPushButton *strike_button = new QPushButton("X", this); //OBVIOUSLY choose better icon later
+    QPushButton *size_button = new QPushButton("S", this);
 
     QFont bold_font = bold_button->font();
     bold_font.setBold(true);
@@ -40,6 +41,7 @@ mainWindow::mainWindow(QWidget *parent) :
     button_box->addWidget(highlight_button);
     button_box->addWidget(colour_button);
     button_box->addWidget(strike_button);
+    button_box->addWidget(size_button);
 
     connect(new_button, &QPushButton::clicked, this, [this, doc_box]() { createDocument(doc_box); });
     connect(open_button, &QPushButton::clicked, this, [this, doc_box]() { openDocument(doc_box); });
@@ -50,5 +52,6 @@ mainWindow::mainWindow(QWidget *parent) :
     connect(highlight_button, &QPushButton::clicked, this, [this, doc_box]() { highlightText(doc_box); });
     connect(colour_button, &QPushButton::clicked, this, [this, doc_box]() { colourText(doc_box); });
     connect(strike_button, &QPushButton::clicked, this, [this, doc_box]() { strikeText(doc_box); });
+    connect(size_button, &QPushButton::clicked, this, [this, doc_box]() { sizeText(doc_box); });
 }
 

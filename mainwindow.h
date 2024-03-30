@@ -83,12 +83,15 @@ public:
         return;
     }
     void highlightText(QTextEdit *doc_box){
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        QBrush colour = QBrush("green"); //allow for colour selection from user
+        format.setBackground(colour);
+        doc_box->textCursor().setCharFormat(format);
         return;
     }
     void colourText(QTextEdit *doc_box){
-        QColor colour;
-        colour.fromString("blue");
-        QTextCharFormat format;
+        QTextCharFormat format = doc_box->textCursor().charFormat(); //can use '.foreground() to check if foreground is set
+        QBrush colour = QBrush("green"); //allow for colour selection from user
         format.setForeground(colour);
         doc_box->textCursor().setCharFormat(format);
         return;
@@ -101,6 +104,13 @@ public:
         else{
             format.setFontStrikeOut(true);
         }
+        doc_box->textCursor().setCharFormat(format);
+        return;
+    }
+    void sizeText(QTextEdit *doc_box){
+        QTextStream(stdout) << doc_box->textCursor().charFormat().fontPointSize() << Qt::endl;
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        format.setFontPointSize(20);
         doc_box->textCursor().setCharFormat(format);
         return;
     }
