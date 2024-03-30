@@ -17,7 +17,13 @@ mainWindow::mainWindow(QWidget *parent) :
     QPushButton *open_button = new QPushButton("Open", this);
     QPushButton *save_button = new QPushButton("Save", this);
     QPushButton *bold_button = new QPushButton("B", this);
+    QFont bold_font = bold_button->font();
+    bold_font.setBold(true);
+    bold_button->setFont(bold_font);
     QPushButton *italics_button = new QPushButton("I", this);
+    QFont italic_font = italics_button->font();
+    italic_font.setItalic(true);
+    italics_button->setFont(italic_font);
     button_box->addWidget(new_button);
     button_box->addWidget(open_button);
     button_box->addWidget(save_button);

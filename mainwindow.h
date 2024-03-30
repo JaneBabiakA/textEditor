@@ -20,6 +20,7 @@ class mainWindow : public QWidget
 public:
     mainWindow(QWidget *parent = nullptr);
     void openDocument(QTextEdit *doc_box){
+        //TODO: not just text files! do .doc as well?
         saveDocument(doc_box);
         doc_box->clear();
         std::string line;
@@ -48,9 +49,27 @@ public:
         file.close();
     }
     void boldText(QTextEdit *doc_box){
+        QTextCharFormat format;
+        format.setFontWeight(QFont::Bold);
+        if (doc_box->textCursor().charFormat() == format){
+            format.setFontWeight(QFont::Normal);
+            doc_box->textCursor().setCharFormat(format);
+        }
+        else{
+            doc_box->textCursor().setCharFormat(format);
+        }
         return;
     }
     void italicsText(QTextEdit *doc_box){
+        QTextCharFormat format;
+        format.setFontItalic(true);
+        if (doc_box->textCursor().charFormat() == format){
+            format.setFontItalic(false);
+            doc_box->textCursor().setCharFormat(format);
+        }
+        else{
+            doc_box->textCursor().setCharFormat(format);
+        }
         return;
     }
 
