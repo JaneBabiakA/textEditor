@@ -22,7 +22,12 @@ mainWindow::mainWindow(QWidget *parent) :
     QPushButton *highlight_button = new QPushButton("H", this); //choose better icon later
     QPushButton *colour_button = new QPushButton("C", this); //choose better icon later
     QPushButton *strike_button = new QPushButton("X", this); //OBVIOUSLY choose better icon later
-    QPushButton *size_button = new QPushButton("S", this);
+    QSpinBox *size_button = new QSpinBox(this);
+
+    size_button->setMinimum(2);
+    size_button->setValue(12);
+    size_button->setSingleStep(2);
+
 
     QFont bold_font = bold_button->font();
     bold_font.setBold(true);
@@ -52,6 +57,6 @@ mainWindow::mainWindow(QWidget *parent) :
     connect(highlight_button, &QPushButton::clicked, this, [this, doc_box]() { highlightText(doc_box); });
     connect(colour_button, &QPushButton::clicked, this, [this, doc_box]() { colourText(doc_box); });
     connect(strike_button, &QPushButton::clicked, this, [this, doc_box]() { strikeText(doc_box); });
-    connect(size_button, &QPushButton::clicked, this, [this, doc_box]() { sizeText(doc_box); });
+    connect(size_button, &QSpinBox::valueChanged, this, [this, doc_box, size_button]() { sizeText(doc_box, size_button->value()); });
 }
 

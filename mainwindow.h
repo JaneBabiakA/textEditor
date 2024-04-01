@@ -5,7 +5,7 @@
 #include <QWidget>
 #include <QFileDialog>
 #include <QStandardPaths>
-#include <fstream>
+#include <QSpinBox>
 
 class QPushButton;
 class QHBoxLayout;
@@ -13,9 +13,10 @@ class QVBoxLayout;
 class QTextEdit;
 class QFileDialog;
 class QStandardPaths;
+class QSpinBox;
 class mainWindow : public QWidget
 {
-    std::string fileName;
+    QString fileName;
     Q_OBJECT
 public:
     mainWindow(QWidget *parent = nullptr);
@@ -24,12 +25,12 @@ public:
         saveDocument(doc_box);
         doc_box->clear();
         std::string line;
-        fileName = QFileDialog::getOpenFileName(this, "", "", "Text files (*.txt)").toStdString();
-        std::ifstream file(fileName);
+        fileName = QFileDialog::getOpenFileName(this, "", "", "Text files (*.txt)");
+        //std::ifstream file(fileName);
         doc_box->setText("");
-        while(std::getline(file, line)){
-            doc_box->append(QString::fromStdString(line));
-        }
+        //while(std::getline(file, line)){
+        //    doc_box->append(QString::fromStdString(line));
+        //}
     }
     void createDocument(QTextEdit *doc_box){
         if (fileName != ""){
@@ -40,18 +41,21 @@ public:
         return;
     }
     void saveDocument(QTextEdit *doc_box){
-        QTextStream(stdout) << QString::fromStdString(fileName) << Qt::endl;
         if(fileName == ""){
-            fileName = QFileDialog::getSaveFileName(this, "", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), "All Word Documents (*.doc, *.docx)").toStdString();
+            fileName = QFileDialog::getSaveFileName(this, "", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), "All Word Documents (*.doc, *.docx)");
         }
-        QTextStream(stdout) << QString::fromStdString(fileName) << Qt::endl;
-        std::ofstream file(fileName);
-        file << doc_box->toPlainText().toStdString();
-        file.close();
+        QFile file(fileName);
+        if (file.open(QFile::WriteOnly | QFile::Text)){
+            QTextStream write(&file);
+            write << doc_box->toHtml();
+            file.flush();
+            file.close();
+        }
+        //raise warning if file doesn't open?
     }
     void boldText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
-        if (format.fontWeight() == 75){
+        if (format.fontWeight() == 700){
             format.setFontWeight(QFont::Normal);
         }
         else{
@@ -107,11 +111,14 @@ public:
         doc_box->textCursor().setCharFormat(format);
         return;
     }
-    void sizeText(QTextEdit *doc_box){
-        QTextStream(stdout) << doc_box->textCursor().charFormat().fontPointSize() << Qt::endl;
+    void sizeText(QTextEdit *doc_box, int size){
         QTextCharFormat format = doc_box->textCursor().charFormat();
-        format.setFontPointSize(20);
+        QTextStream(stdout) << format.fontWeight() << " " << Qt::endl;
+        QTextStream(stdout) << format.fontPointSize() << " " << Qt::endl;
+        format.setFontPointSize(size);
         doc_box->textCursor().setCharFormat(format);
+        QTextStream(stdout) << format.fontWeight() << " " << Qt::endl;
+        QTextStream(stdout) << format.fontPointSize() << " " << Qt::endl;
         return;
     }
 
@@ -122,6 +129,13 @@ private:
     QPushButton *open_button;
     QPushButton *save_button;
     QTextEdit *doc_box;
+    QSpinBox *size_button;
+    QPushButton *bold_button;
+    QPushButton *underline_button;
+    QPushButton *highlight_button;
+    QPushButton *colour_button;
+    QPushButton *strike_button;
+
 };
 #endif // MAINWINDOW_H
 
