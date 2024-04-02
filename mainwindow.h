@@ -5,7 +5,6 @@
 #include <QWidget>
 #include <QFileDialog>
 #include <QStandardPaths>
-#include <QSpinBox>
 
 class QPushButton;
 class QHBoxLayout;
@@ -14,6 +13,7 @@ class QTextEdit;
 class QFileDialog;
 class QStandardPaths;
 class QSpinBox;
+class QComboBox;
 class mainWindow : public QWidget
 {
     QString fileName;
@@ -113,12 +113,14 @@ public:
     }
     void sizeText(QTextEdit *doc_box, int size){
         QTextCharFormat format = doc_box->textCursor().charFormat();
-        QTextStream(stdout) << format.fontWeight() << " " << Qt::endl;
-        QTextStream(stdout) << format.fontPointSize() << " " << Qt::endl;
         format.setFontPointSize(size);
         doc_box->textCursor().setCharFormat(format);
-        QTextStream(stdout) << format.fontWeight() << " " << Qt::endl;
-        QTextStream(stdout) << format.fontPointSize() << " " << Qt::endl;
+        return;
+    }
+    void fontText(QTextEdit *doc_box, QString font){
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        format.setFontFamilies({font});
+        doc_box->textCursor().setCharFormat(format);
         return;
     }
 
@@ -135,6 +137,7 @@ private:
     QPushButton *highlight_button;
     QPushButton *colour_button;
     QPushButton *strike_button;
+    QComboBox *font_button;
 
 };
 #endif // MAINWINDOW_H
