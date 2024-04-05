@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QTextEdit>
 #include <QFontDatabase>
+#include <QColorDialog>
 
 mainWindow::mainWindow(QWidget *parent) :
     QWidget(parent)
@@ -44,16 +45,6 @@ mainWindow::mainWindow(QWidget *parent) :
     QComboBox *font_button = new QComboBox(this);
 
     QStringList fonts = QFontDatabase::families();
-
-    QList ex = QFontDatabase::writingSystems();
-
-
-    for (int i = 0; i < ex.length(); i++){
-        QTextStream(stdout) << ex[i] << Qt::endl;
-    }
-
-
-
 
     font_button->addItems(fonts);
 

@@ -4,6 +4,7 @@
 #include "qtextedit.h"
 #include <QWidget>
 #include <QFileDialog>
+#include <QColorDialog>
 #include <QStandardPaths>
 
 class QPushButton;
@@ -14,6 +15,7 @@ class QFileDialog;
 class QStandardPaths;
 class QSpinBox;
 class QComboBox;
+class QColorDialog;
 class mainWindow : public QWidget
 {
     QString fileName;
@@ -88,14 +90,14 @@ public:
     }
     void highlightText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
-        QBrush colour = QBrush("green"); //allow for colour selection from user
+        QColor colour = QColorDialog::getColor();
         format.setBackground(colour);
         doc_box->textCursor().setCharFormat(format);
         return;
     }
     void colourText(QTextEdit *doc_box){
-        QTextCharFormat format = doc_box->textCursor().charFormat(); //can use '.foreground() to check if foreground is set
-        QBrush colour = QBrush("green"); //allow for colour selection from user
+        QTextCharFormat format = doc_box->textCursor().charFormat();
+        QColor colour = QColorDialog::getColor();
         format.setForeground(colour);
         doc_box->textCursor().setCharFormat(format);
         return;
