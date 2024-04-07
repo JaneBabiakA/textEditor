@@ -8,6 +8,7 @@
 #include <QTextEdit>
 #include <QFontDatabase>
 #include <QColorDialog>
+#include <QLabel>
 
 mainWindow::mainWindow(QWidget *parent) :
     QWidget(parent)
@@ -31,8 +32,8 @@ mainWindow::mainWindow(QWidget *parent) :
     QPushButton *highlight_button = new QPushButton("H", this); //choose better icon later
     QPushButton *colour_button = new QPushButton("C", this); //choose better icon later
     QPushButton *strike_button = new QPushButton("X", this); //OBVIOUSLY choose better icon later
-    QSpinBox *size_button = new QSpinBox(this);
 
+    QSpinBox *size_button = new QSpinBox(this);
     size_button->setMinimum(2);
     size_button->setValue(12);
     size_button->setSingleStep(2);
@@ -43,10 +44,11 @@ mainWindow::mainWindow(QWidget *parent) :
     italics_button->setFont(italic_font);
 
     QComboBox *font_button = new QComboBox(this);
-
     QStringList fonts = QFontDatabase::families();
-
     font_button->addItems(fonts);
+
+    QLabel *word_count = new QLabel("Word count: 0", this);
+    window_box->addWidget(word_count);
 
     button_box->addWidget(new_button);
     button_box->addWidget(open_button);
@@ -71,5 +73,7 @@ mainWindow::mainWindow(QWidget *parent) :
     connect(strike_button, &QPushButton::clicked, this, [this, doc_box]() { strikeText(doc_box); });
     connect(size_button, &QSpinBox::valueChanged, this, [this, doc_box, size_button]() { sizeText(doc_box, size_button->value()); });
     connect(font_button, &QComboBox::currentTextChanged, this, [this, doc_box, font_button]() { fontText(doc_box, font_button->currentText()); });
+    connect(doc_box, &QTextEdit::textChanged, this, [this, doc_box, word_count]() { countText(doc_box->toPlainText(), word_count); });
+    connect(doc_box, &QTextEdit::selectionChanged, this, [this, doc_box, word_count]() { countText(doc_box->textCursor().selectedText(), word_count); });
 }
 

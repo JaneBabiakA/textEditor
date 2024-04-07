@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "qlabel.h"
 #include "qtextedit.h"
 #include <QWidget>
 #include <QFileDialog>
 #include <QColorDialog>
 #include <QStandardPaths>
+#include <QRegularExpression>
 
 class QPushButton;
 class QHBoxLayout;
@@ -16,6 +18,7 @@ class QStandardPaths;
 class QSpinBox;
 class QComboBox;
 class QColorDialog;
+class QLabel;
 class mainWindow : public QWidget
 {
     QString fileName;
@@ -125,6 +128,13 @@ public:
         doc_box->textCursor().setCharFormat(format);
         return;
     }
+    void countText(QString content, QLabel *word_count){
+        int count = content.split(QRegularExpression("(\\s|\\n|\\r)+"), Qt::SkipEmptyParts).count();
+        if (count != 0){
+           word_count->setText("Word count: " + QString::number(count));
+        }
+        return;
+    }
 
 private:
     QVBoxLayout *window_box;
@@ -140,7 +150,7 @@ private:
     QPushButton *colour_button;
     QPushButton *strike_button;
     QComboBox *font_button;
-
+    QLabel *word_count;
 };
 #endif // MAINWINDOW_H
 
