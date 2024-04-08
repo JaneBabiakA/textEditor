@@ -50,6 +50,9 @@ mainWindow::mainWindow(QWidget *parent) :
     QLabel *word_count = new QLabel("Word count: 0", this);
     window_box->addWidget(word_count);
 
+    QComboBox *alignment_button = new QComboBox(this);
+    alignment_button->addItems({"Left", "Right", "Justify", "Center"});
+
     button_box->addWidget(new_button);
     button_box->addWidget(open_button);
     button_box->addWidget(save_button);
@@ -75,5 +78,6 @@ mainWindow::mainWindow(QWidget *parent) :
     connect(font_button, &QComboBox::currentTextChanged, this, [this, doc_box, font_button]() { fontText(doc_box, font_button->currentText()); });
     connect(doc_box, &QTextEdit::textChanged, this, [this, doc_box, word_count]() { countText(doc_box->toPlainText(), word_count); });
     connect(doc_box, &QTextEdit::selectionChanged, this, [this, doc_box, word_count]() { countText(doc_box->textCursor().selectedText(), word_count); });
+    connect(alignment_button, &QComboBox::currentTextChanged, this, [this, doc_box, alignment_button]() { alignText(doc_box, alignment_button->currentText()); });
 }
 

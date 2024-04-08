@@ -22,6 +22,7 @@ class QLabel;
 class mainWindow : public QWidget
 {
     QString fileName;
+    std::map<QString, Qt::Alignment> alignments = { { "Left", Qt::AlignLeft }, { "Right", Qt::AlignRight }, { "Justify", Qt::AlignJustify }, { "Center", Qt::AlignCenter } };
     Q_OBJECT
 public:
     mainWindow(QWidget *parent = nullptr);
@@ -43,7 +44,6 @@ public:
             fileName = "";
         }
         doc_box->clear();
-        return;
     }
     void saveDocument(QTextEdit *doc_box){
         if(fileName == ""){
@@ -67,7 +67,6 @@ public:
             format.setFontWeight(QFont::Bold);
         }
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void italicsText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
@@ -78,7 +77,6 @@ public:
             format.setFontItalic(true);
         }
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void underlineText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
@@ -89,21 +87,18 @@ public:
             format.setFontUnderline(true);
         }
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void highlightText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
         QColor colour = QColorDialog::getColor();
         format.setBackground(colour);
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void colourText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
         QColor colour = QColorDialog::getColor();
         format.setForeground(colour);
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void strikeText(QTextEdit *doc_box){
         QTextCharFormat format = doc_box->textCursor().charFormat();
@@ -114,28 +109,26 @@ public:
             format.setFontStrikeOut(true);
         }
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void sizeText(QTextEdit *doc_box, int size){
         QTextCharFormat format = doc_box->textCursor().charFormat();
         format.setFontPointSize(size);
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void fontText(QTextEdit *doc_box, QString font){
         QTextCharFormat format = doc_box->textCursor().charFormat();
         format.setFontFamilies({font});
         doc_box->textCursor().setCharFormat(format);
-        return;
     }
     void countText(QString content, QLabel *word_count){
         int count = content.split(QRegularExpression("(\\s|\\n|\\r)+"), Qt::SkipEmptyParts).count();
         if (count != 0){
            word_count->setText("Word count: " + QString::number(count));
         }
-        return;
     }
-
+    void alignText(QTextEdit *doc_box, QString alignment){
+        doc_box->setAlignment(alignments[alignment]);
+    }
 private:
     QVBoxLayout *window_box;
     QHBoxLayout *button_box;
@@ -151,6 +144,7 @@ private:
     QPushButton *strike_button;
     QComboBox *font_button;
     QLabel *word_count;
+    QComboBox *alignment_button;
 };
 #endif // MAINWINDOW_H
 
